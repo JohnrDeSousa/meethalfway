@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(222 84% 5%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(222 84% 5%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(222 84% 5%);
+  --primary: hsl(214 100% 40%);
+  --primary-foreground: hsl(210 40% 98%);
+  --secondary: hsl(210 40% 96%);
+  --secondary-foreground: hsl(222 84% 5%);
+  --muted: hsl(210 40% 96%);
+  --muted-foreground: hsl(215 13% 37%);
+  --accent: hsl(142 71% 30%);
+  --accent-foreground: hsl(0 0% 100%);
+  --destructive: hsl(0 84% 45%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(214 20% 65%);
+  --input: hsl(214 20% 65%);
+  --ring: hsl(214 100% 40%);
+  --chart-1: hsl(214 100% 40%);
+  --chart-2: hsl(142 71% 45%);
+  --chart-3: hsl(42 92% 56%);
+  --chart-4: hsl(147 78% 42%);
+  --chart-5: hsl(341 75% 51%);
+  --sidebar: hsl(210 40% 96%);
+  --sidebar-foreground: hsl(222 84% 5%);
+  --sidebar-primary: hsl(214 100% 40%);
+  --sidebar-primary-foreground: hsl(210 40% 98%);
+  --sidebar-accent: hsl(210 40% 96%);
+  --sidebar-accent-foreground: hsl(214 100% 40%);
+  --sidebar-border: hsl(214 32% 91%);
+  --sidebar-ring: hsl(214 100% 40%);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: Menlo, monospace;
+  --radius: 0.5rem;
+  --shadow-2xs: 0px 2px 0px 0px hsl(214 100% 40% / 0.00);
+  --shadow-xs: 0px 2px 0px 0px hsl(214 100% 40% / 0.00);
+  --shadow-sm: 0px 2px 0px 0px hsl(214 100% 40% / 0.00), 0px 1px 2px -1px hsl(214 100% 40% / 0.00);
+  --shadow: 0px 2px 0px 0px hsl(214 100% 40% / 0.00), 0px 1px 2px -1px hsl(214 100% 40% / 0.00);
+  --shadow-md: 0px 2px 0px 0px hsl(214 100% 40% / 0.00), 0px 2px 4px -1px hsl(214 100% 40% / 0.00);
+  --shadow-lg: 0px 2px 0px 0px hsl(214 100% 40% / 0.00), 0px 4px 6px -1px hsl(214 100% 40% / 0.00);
+  --shadow-xl: 0px 2px 0px 0px hsl(214 100% 40% / 0.00), 0px 8px 10px -1px hsl(214 100% 40% / 0.00);
+  --shadow-2xl: 0px 2px 0px 0px hsl(214 100% 40% / 0.00);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: hsl(0 0% 0%);
+  --foreground: hsl(200 7% 91%);
+  --card: hsl(228 10% 10%);
+  --card-foreground: hsl(0 0% 85%);
+  --popover: hsl(0 0% 0%);
+  --popover-foreground: hsl(200 7% 91%);
+  --primary: hsl(204 88% 35%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(195 15% 95%);
+  --secondary-foreground: hsl(222 84% 5%);
+  --muted: hsl(0 0% 9%);
+  --muted-foreground: hsl(210 3% 65%);
+  --accent: hsl(206 70% 8%);
+  --accent-foreground: hsl(204 88% 53%);
+  --destructive: hsl(0 84% 50%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(210 5% 65%);
+  --input: hsl(208 20% 65%);
+  --ring: hsl(214 100% 40%);
+  --chart-1: hsl(214 100% 40%);
+  --chart-2: hsl(142 71% 45%);
+  --chart-3: hsl(42 92% 56%);
+  --chart-4: hsl(147 78% 42%);
+  --chart-5: hsl(341 75% 51%);
+  --sidebar: hsl(228 10% 10%);
+  --sidebar-foreground: hsl(0 0% 85%);
+  --sidebar-primary: hsl(214 100% 40%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(206 70% 8%);
+  --sidebar-accent-foreground: hsl(204 88% 53%);
+  --sidebar-border: hsl(206 16% 26%);
+  --sidebar-ring: hsl(214 100% 40%);
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, hsl(214 100% 40%) 0%, hsl(142 71% 45%) 100%);
+}
+
+.map-container {
+  background: linear-gradient(45deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
+  position: relative;
+}
+
+.map-placeholder::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  background: hsl(214 100% 40% / 0.2);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 0.5; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 0.3; 
+    transform: scale(1.1); 
+  }
+}
+
+.venue-card {
+  transition: all 0.2s ease;
+}
+
+.venue-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px hsl(0 0% 0% / 0.1);
+}
+
+.filter-pill {
+  transition: all 0.15s ease;
+}
+
+.filter-pill:hover {
+  transform: translateY(-1px);
+}
+
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Google AdSense Responsive Styling */
+.ad-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background: transparent;
+}
+
+/* Mobile-first responsive ads */
+@media (max-width: 640px) {
+  .ad-container .adsbygoogle[data-ad-slot="1234567890"], /* Homepage leaderboard */
+  .ad-container .adsbygoogle[data-ad-slot="2222222222"] { /* Results page leaderboard */
+    width: 320px !important;
+    height: 100px !important;
+  }
+  
+  .ad-container .adsbygoogle[data-ad-slot="3333333333"], /* Rectangle ads */
+  .ad-container .adsbygoogle[data-ad-slot="5555555555"],
+  .ad-container .adsbygoogle[data-ad-slot="6666666666"] {
+    width: 300px !important;
+    height: 250px !important;
+  }
+}
+
+/* Tablet responsive */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .ad-container .adsbygoogle[data-ad-slot="1234567890"],
+  .ad-container .adsbygoogle[data-ad-slot="2222222222"] {
+    width: 728px !important;
+    height: 90px !important;
+  }
+}
+
+/* Desktop responsive */
+@media (min-width: 1025px) {
+  .ad-container .adsbygoogle[data-ad-slot="1234567890"],
+  .ad-container .adsbygoogle[data-ad-slot="2222222222"] {
+    width: 728px !important;
+    height: 90px !important;
+    max-width: 100%;
+  }
+  
+  .ad-container .adsbygoogle[data-ad-slot="8888888888"] { /* Skyscraper */
+    width: 160px !important;
+    height: 600px !important;
+  }
+}
+
+/* Hide ads gracefully on very small screens if needed */
+@media (max-width: 320px) {
+  .ad-container {
+    display: none;
+  }
+}
+
+/* Ensure ads don't overflow */
+.ad-container .adsbygoogle {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Smooth loading animation for ads */
+.ad-container .adsbygoogle:empty::before {
+  content: 'Advertisement';
+  display: block;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+  background: hsl(var(--muted));
+  padding: 2rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  animation: ad-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes ad-pulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Dark mode ad styling */
+.dark .ad-container .adsbygoogle:empty::before {
+  background: hsl(var(--muted) / 0.5);
+  color: hsl(var(--muted-foreground) / 0.7);
+}
+
+/* Ad container hover effect for better UX */
+.ad-container:hover {
+  background: hsl(var(--muted) / 0.3);
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}

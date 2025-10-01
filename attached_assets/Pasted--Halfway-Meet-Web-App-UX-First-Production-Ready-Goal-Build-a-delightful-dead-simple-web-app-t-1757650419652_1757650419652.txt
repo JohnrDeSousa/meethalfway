@@ -1,0 +1,155 @@
+“Halfway-Meet” Web App (UX-First, Production-Ready)
+
+Goal: Build a delightful, dead-simple web app that helps two (or more) people find a fair halfway meeting point, browse great venues nearby (restaurants, cafés, parks, hiking trails, points of interest), filter by type and rating, book (OpenTable), and share an itinerary with deep-links to Apple Maps or Google Maps for directions. Include a premium tier for power users.
+
+⸻
+
+1) Core User Journeys (prioritize smoothness + zero dead ends)
+
+A. Fast path (no sign-in)
+	1.	Landing: Minimal hero, one line explainer, two location inputs (“Your location”, “Their location”), or “Use my current location”.
+	2.	Compute midpoint:
+	•	If two users: geographic midpoint (option to weight distance by travel time).
+	•	If 3+ users: compute minimax meeting point or centroid with option “favor public transit”.
+	3.	Browse results: Show a map + cards list of recommended spots near the midpoint.
+	•	Cards: name, category, rating, review count, price tier, open/close status, travel time from each user, quick actions (Directions, Save, Share).
+	4.	Filters: Venue type (Restaurant, Café, Bar, Park, Hike, POI), rating (≥4.0, ≥4.5), price ($–$$$), distance from midpoint, “kid-friendly”, “outdoor seating”, “reservations available”.
+	5.	Actions:
+	•	Directions: Buttons for “Apple Maps” and “Google Maps” for each participant (pre-filled origin/destination).
+	•	Book: If OpenTable available, deep-link or in-modal reservation flow.
+	•	Share: Copy link, SMS share, and “Create invite” (single URL with state encoded).
+	6.	Itinerary: Optional one-click itinerary page with selected venue + time + directions links for each attendee.
+
+B. Collaborative path (optional sign-in)
+	•	Create a lightweight shared room where invitees see the same shortlist, vote/emoji on options, pick time, and lock a plan. No friction: join by link; sign-in only if user wants to save history or premium features.
+
+⸻
+
+2) Features & Requirements
+
+Core features
+	•	Multi-input addresses (manual entry + browser geolocation consent).
+	•	Midpoint engine supporting 2–10 participants:
+	•	Modes: pure geographic midpoint; time-aware midpoint (query travel time matrix; choose point minimizing max travel time).
+	•	Results:
+	•	Pull place data (name, type, rating, price, hours, photos, website, phone).
+	•	Categories: Restaurants, Cafés, Bars, Parks, Trails, Museums/POIs.
+	•	Sorting: “Best overall”, “Highest rated”, “Shortest average travel time”, “Kid-friendly first”.
+	•	Directions deep-links:
+	•	Google Maps: https://www.google.com/maps/dir/?api=1&origin=LAT,LNG&destination=LAT,LNG&travelmode=driving
+	•	Apple Maps: http://maps.apple.com/?saddr=LAT,LNG&daddr=LAT,LNG&dirflg=d
+	•	Reservations: OpenTable deep-link (or use their availability API if accessible).
+	•	Shareable state: Short URLs (own shortener or clean query params) that rehydrate full state (participants, midpoint mode, filters, shortlist).
+
+Premium (Stripe)
+	•	Premium features:
+	•	Time-aware midpoint (traffic weighting).
+	•	Real-time availability + booking assist (where API permits).
+	•	Collaborative room with polls & reminders.
+	•	Saved favorites & meeting history.
+	•	Export to calendar (.ics), add notes, attach kids/pets preferences.
+	•	Stripe: Checkout, customer portal, role-based gating in UI.
+
+Accessibility & UX
+	•	WCAG 2.1 AA: focus states, labels, high contrast, keyboard nav, ARIA for map/list.
+	•	Skeleton loaders, optimistic UI, clear empty states, undo on destructive actions.
+	•	Performance: LCP < 2.5s on median mobile, lazy-load map & images, cache hot queries.
+
+⸻
+
+3) Integrations & Data Sources (prefer stable, well-documented APIs)
+	•	Places: Google Places API (Place Search, Details, Photos). If needed, consider Foursquare Places for category coverage. (Abstract behind a PlaceProvider interface.)
+	•	Directions/Distance: Google Distance Matrix for time-aware midpoint (premium).
+	•	Reservations: OpenTable deep-links (and/or API if available to the project).
+	•	Maps: Map display via leaflet + OpenStreetMap tiles (no key) or Google Maps JS SDK (if key available).
+	•	Auth: Email magic link or OAuth (Google/Apple) via a simple provider (e.g., Supabase/Auth.js).
+	•	Payments: Stripe (test + live keys via env).
+
+⸻
+
+4) Tech Stack (suggested, adjust if better)
+	•	Frontend: React + Vite (or Next.js if SSR helps SEO). TypeScript.
+	•	UI: Headless components (Radix/HeadlessUI) + simple, clean design system; responsive mobile-first.
+	•	State: React Query for server state; URLSearchParams to persist filters.
+	•	Backend: Node/Express (or Next.js API routes). TypeScript.
+	•	DB: Lightweight (Postgres or SQLite) for saved plans, users, premium entitlements.
+	•	Map: Leaflet (OSM) or Google Maps SDK; provider behind interface for swap.
+	•	Deployment: Replit hosting; .env for API keys; healthcheck endpoint.
+
+⸻
+
+5) Pages & Components
+	•	/ (Home): Location form, midpoint mode picker, CTA.
+	•	/results: Map + list, filters, sort, cards with key actions.
+	•	/plan/:id: Shareable itinerary page with venue, time, participant-specific directions buttons, calendar export, OpenTable link.
+	•	/account (premium): Manage subscription (Stripe portal), saved places/history, preferences.
+	•	Components: LocationPicker, ParticipantsManager, FiltersBar, VenueCard, MapView, SortMenu, PremiumGate, ShareDialog, PollWidget (for collaborative rooms).
+
+⸻
+
+6) Non-Functional Requirements
+	•	Privacy: Never store precise locations without consent; hash or round coordinates when saving shared links. Explain in a short privacy blurb.
+	•	Rate-limits: Backoff & caching for Places/Matrix. Cache last 20 queries per IP/session.
+	•	Errors: User-friendly toasts; fallbacks (e.g., if reservations unavailable, show phone/website).
+	•	Internationalization-ready (strings centralised).
+
+⸻
+
+7) Testing & Agent-3 Autonomy (self-testing required)
+
+Build automated browser tests (Playwright or Puppeteer) that Agent 3 runs:
+	1.	Location input flows:
+	•	Manual addresses; geolocation allow/deny.
+	•	Two users, three users.
+	2.	Midpoint calculations:
+	•	Geographic midpoint vs time-aware midpoint produce different candidates.
+	•	Edge case: identical addresses.
+	3.	Filters & sorting:
+	•	Apply “Parks” + rating ≥4.5 + distance ≤3mi; results update; empty state handled.
+	4.	Directions links:
+	•	Validate Google/Apple links contain correct coords for each participant.
+	5.	OpenTable link presence when restaurant supports reservations.
+	6.	Sharing:
+	•	“Copy share link” restores full state on a fresh browser instance.
+	7.	Premium gates:
+	•	Time-aware midpoint disabled until Stripe test user is subscribed; enabled after checkout.
+	8.	Accessibility smoke:
+	•	Keyboard navigation reaches inputs, filter toggles, and venue cards; ARIA landmarks present.
+
+Have the agent fix failing tests automatically, iterate until green.
+
+⸻
+
+8) Acceptance Criteria (ship only when all pass)
+	•	Midpoint and results returned within <2.0s for typical urban addresses (cached).
+	•	At least 5 venue types supported: Restaurants, Cafés, Bars, Parks, Trails/POIs.
+	•	Directions buttons generate valid Apple/Google links for each participant.
+	•	OpenTable deep-link present when available; graceful fallback when not.
+	•	Filters and sorting function correctly and persist in URL.
+	•	Share link rehydrates full state, including participants and chosen venue.
+	•	Premium flow works with Stripe test keys; portal reachable.
+	•	Core Playwright tests green in CI run; basic a11y checks pass.
+
+⸻
+
+9) Developer Ops in Replit
+	•	Create .env with placeholders: PLACES_API_KEY, STRIPE_PUBLIC_KEY, STRIPE_SECRET_KEY, etc.
+	•	Provide a README with:
+	•	how to run locally,
+	•	how to add API keys,
+	•	how to toggle OSM/Google map provider,
+	•	known limits & next steps.
+
+⸻
+
+10) Stretch Ideas (nice-to-have)
+	•	Transit-aware midpoint mode; bike-friendly option.
+	•	Time window planning (find venues open for the overlapping window).
+	•	ESG/ethical filters (locally owned, wheelchair accessible, quiet).
+	•	Weather-aware recommendations (prefer indoor vs parks if rain likely).
+	•	Calendar invites via ICS + Google Calendar API.
+	•	SMS invites (Twilio) for one-tap mobile join.
+
+⸻
+
+Now build it. Start with the UX flow and tests, then the midpoint and places engine, then payments + sharing. Prioritize speed, clarity, and happy-path first—then harden with tests and edge cases.
