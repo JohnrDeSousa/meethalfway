@@ -116,10 +116,10 @@ export default function Home() {
       <main>
         <section className="hero-gradient py-16 px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-primary-foreground mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Find the perfect meeting spot, halfway between everyone
             </h2>
-            <p className="text-xl text-primary-foreground/90 mb-12 max-w-2xl mx-auto">
+            <p className="text-xl text-white/95 mb-12 max-w-2xl mx-auto">
               Enter locations, discover amazing venues at your midpoint, and get directions for everyone.
             </p>
           
